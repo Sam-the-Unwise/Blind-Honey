@@ -131,6 +131,20 @@ function setup()
     gameScene.interactive = false;
     gameScene.visible = false;
 
+    var frames_bee_u = [];
+
+    for (var i = 1; i <= 4; i++)
+    {
+        frames_bee_u.push(PIXI.Texture.fromFrame('Sprites/Sprite_Bee_T' + i + '.png'));
+    }
+
+    var frames_bee_d = [];
+
+    for (var i = 1; i <= 4; i++)
+    {
+        frames_bee_d.push(PIXI.Texture.fromFrame('Sprites/Sprite_Bee_D' + i + '.png'));
+    }
+
     right_flying_bee = new PIXI.AnimatedSprite(frames_bee_r);
     right_flying_bee.scale.set(1, 1);
     right_flying_bee.position.x = 200;
@@ -147,7 +161,7 @@ function setup()
     left_flying_bee.play();
     gameScene.addChild(left_flying_bee);
 
-    up_flying_bee = new PIXI.AnimatedSprite(frames_bee_r);
+    up_flying_bee = new PIXI.AnimatedSprite(frames_bee_u);
     up_flying_bee.scale.set(1, 1);
     up_flying_bee.position.x = 200;
     up_flying_bee.position.y = 200;
@@ -155,7 +169,7 @@ function setup()
     up_flying_bee.play();
     gameScene.addChild(up_flying_bee);
 
-    down_flying_bee = new PIXI.AnimatedSprite(frames_bee_r);
+    down_flying_bee = new PIXI.AnimatedSprite(frames_bee_d);
     down_flying_bee.scale.set(1, 1);
     down_flying_bee.position.x = 200;
     down_flying_bee.position.y = 200;
@@ -348,7 +362,6 @@ function animate()
     
     else if(gameScene.interactive)
     {
-        right_flying_bee.visible = true;
         right_flying_bee.interactive = true;
         quit_game_button.interactive = true;
         quit_game_button.on('mousedown', quit);
@@ -377,7 +390,7 @@ function animate()
     {
         quit_credits_button.interactive = true;
         quit_credits_button.on('mousedown', quit_to_home);
-        
+
         renderer.render(creditScene);
     }
 }
@@ -385,34 +398,79 @@ function animate()
 //CREATE HANDLER FUNCTIONS
 function keydownHandler(e)
 {
-    if (e.keyCode == 65) //A
+    if(e.keyCode == 65 
+        || e.keyCode == 68 
+        || e.keyCode == 83 
+        || e.keyCode == 87)
     {
-        right_flying_bee.position.x -= 10;
+        var current_bee_x, current_bee_y;
 
+        if(left_flying_bee.visible)
+        {
+            current_bee_x = left_flying_bee.position.x;
+            current_bee_y = left_flying_bee.position.y;
+            left_flying_bee.interactive = false;
+            left_flying_bee.visible = false;
+        }
+        else if(right_flying_bee.visible)
+        {
+            current_bee_x = right_flying_bee.position.x;
+            current_bee_y = right_flying_bee.position.y;
+            right_flying_bee.interactive = false;
+            right_flying_bee.visible = false;
+        }
+        else if(up_flying_bee.visible)
+        {
+            current_bee_x = up_flying_bee.position.x;
+            current_bee_y = up_flying_bee.position.y;
+            up_flying_bee.interactive = false;
+            up_flying_bee.visible = false;
+        }
+        else if(down_flying_bee.visible)
+        {
+            current_bee_x = down_flying_bee.position.x;
+            current_bee_y = down_flying_bee.position.y;
+            down_flying_bee.interactive = false;
+            down_flying_bee.visible = false;
+        }
+
+
+        if (e.keyCode == 65) //A //LEFT
+        {
+            left_flying_bee.position.x = current_bee_x;
+            left_flying_bee.position.y = current_bee_y;
+            left_flying_bee.visible = true;
+            left_flying_bee.interactive = true;
+            createjs.Tween.get(left_flying_bee).to({x: left_flying_bee.position.x - 50}, 1000);
+        }
+
+        else if (e.keyCode == 68) //D //RIGHT
+        {
+            right_flying_bee.position.x = current_bee_x;
+            right_flying_bee.position.y = current_bee_y;
+            right_flying_bee.visible = true;
+            right_flying_bee.interactive = true;
+            createjs.Tween.get(right_flying_bee).to({x: right_flying_bee.position.x + 50}, 1000);
+        }
+
+        else if (e.keyCode == 83) //S //DOWN
+        {
+            down_flying_bee.position.x = current_bee_x;
+            down_flying_bee.position.y = current_bee_y;
+            down_flying_bee.visible = true;
+            down_flying_bee.interactive = true;
+            createjs.Tween.get(down_flying_bee).to({y: down_flying_bee.position.y + 50}, 1000);
+        }
+
+        else if (e.keyCode == 87) //W //UP
+        {
+            up_flying_bee.position.x = current_bee_x;
+            up_flying_bee.position.y = current_bee_y;
+            up_flying_bee.visible = true;
+            up_flying_bee.interactive = true;
+            createjs.Tween.get(up_flying_bee).to({y: up_flying_bee.position.y - 50}, 1000);
+        }
     }
-
-    if (e.keyCode == 68) //D
-    {
-        right_flying_bee.position.x += 10;
-    }
-
-    // if (e.keyCode == 87) // W
-    // {
-    //     if(laser1.y == 445)
-    //     {
-    //         createjs.Tween.get(laser1).to({y: -550}, 1500);
-    //     }
-    //     else if(laser2.y == 445)
-    //     {
-    //         createjs.Tween.get(laser2).to({y: -550}, 1500);
-    //     }
-    //     else if(laser3.y == 445)
-    //     {
-    //         createjs.Tween.get(laser3).to({y: -550}, 1500);
-    //     }
-    //     //laser.position.y -= 40;
-    // }
-
 }
 
 animate();
