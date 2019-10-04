@@ -1,0 +1,47 @@
+{"frames": {
+
+"Sprite_Bee1.png":
+{
+	"frame": {"x":1,"y":1,"w":32,"h":30},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":32,"h":30},
+	"sourceSize": {"w":32,"h":32}
+},
+"Sprite_Bee2.png":
+{
+	"frame": {"x":1,"y":33,"w":32,"h":29},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":32,"h":29},
+	"sourceSize": {"w":32,"h":32}
+},
+"Sprite_Bee3.png":
+{
+	"frame": {"x":1,"y":95,"w":32,"h":28},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":32,"h":28},
+	"sourceSize": {"w":32,"h":32}
+},
+"Sprite_Bee4.png":
+{
+	"frame": {"x":1,"y":64,"w":32,"h":29},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":32,"h":29},
+	"sourceSize": {"w":32,"h":32}
+}},
+"animations": {
+	"Sprite_Bee": ["Sprite_Bee1.png","Sprite_Bee2.png","Sprite_Bee3.png","Sprite_Bee4.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "assets.png",
+	"format": "RGBA8888",
+	"size": {"w":34,"h":124},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e7f154d3d286b1f1ae74e585b5512116:219a64f30ba97880f60899c99d467792:a759b6bbc8381ac9c472b28f589ad0d6$"
+}
+}
