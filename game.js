@@ -32,7 +32,7 @@ gameOverScene.visible = false;
 
 
 PIXI.loader
-    .add("assets.json")
+    .add("Sprites/assets.json")
     .load(setup);
 
 var opening_flying_bee, start_button, instruction_button, credits_button, 
@@ -40,7 +40,7 @@ var opening_flying_bee, start_button, instruction_button, credits_button,
     quit_game_over_button, quit_instructions_button, credits_bee_1, credits_bee_2;
 
 var right_flying_bee, left_flying_bee, up_flying_bee, down_flying_bee, 
-    flower1, flower2, goodJob, youWin;
+    flower1, flower2, goodJob, youWin, next, quit_game_button_2, quit_game_button_3, quit_game_button_4;
 
 var frames_bee_u = [], frames_bee_r = [], frames_bee_l = [], frames_bee_d = [];
     
@@ -327,6 +327,7 @@ function setUpSceneTwo()
             GAME SCENE 2
     */
 
+    right_flying_bee = new PIXI.AnimatedSprite(frames_bee_r);
     gameScene_2.addChild(right_flying_bee);
     right_flying_bee.scale.set(1, 1);
     right_flying_bee.position.x = 200;
@@ -344,7 +345,7 @@ function setUpSceneTwo()
     gameScene_2.addChild(up_flying_bee);
     up_flying_bee.scale.set(1, 1);
     up_flying_bee.position.x = 200;
-    up_flying_bee.position.y = 250;
+    up_flying_bee.position.y = 270;
     up_flying_bee.animationSpeed = 0.25;
     up_flying_bee.play();
     
@@ -356,17 +357,20 @@ function setUpSceneTwo()
     down_flying_bee.play();
 
     left_flying_bee.visible = false;
-    up_flying_bee.visible = false;
+    up_flying_bee.visible = true;
     down_flying_bee.visible = false;
+    right_flying_bee.visible = false;
 
+    quit_game_button_2 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Quit.png"));
 
-    gameScene_2.addChild(quit_game_button);
-    quit_game_button.anchor.x = .5;
-    quit_game_button.anchor.y = .5;
-    quit_game_button.position.x = 450;
-    quit_game_button.position.y = 20;
-    
-    quit_game_button.interactive = true;
+    gameScene_2.addChild(quit_game_button_2);
+    quit_game_button_2.anchor.x = .5;
+    quit_game_button_2.anchor.y = .5;
+    quit_game_button_2.position.x = 450;
+    quit_game_button_2.position.y = 20;
+
+    quit_game_button_2.interactive = true;
+    quit_game_button_2.visible = true;
 
     gameScene_2.addChild(rock1);
     gameScene_2.addChild(rock2);
@@ -376,25 +380,19 @@ function setUpSceneTwo()
     rock1.position.x = 330;
     rock1.position.y = 250;
     
-    rock2.position.x = 20;
-    rock2.position.y = 50;
+    rock2.position.x = 10;
+    rock2.position.y = 250;
 
     rock3.position.x = 300;
     rock3.position.y = 400;
 
-    rock4.position.x = 10;
-    rock4.position.y = 430;
+    rock4.position.x = 20;
+    rock4.position.y = 50;
 
     gameScene_2.addChild(flower1);
 
     flower1.position.x = 10;
     flower1.position.y = 375;
-
-    flower1.visible = true;
-    gameScene_1.visible = false;
-    gameScene_1.interactive = false;
-    gameScene_2.visible = true;
-    gameScene_2.interactive = true;
 
     gameScene_2.addChild(goodJob);
     goodJob.position.x = 250;
@@ -409,91 +407,87 @@ function setUpSceneTwo()
     next.anchor.x = .5
     next.anchor.y = .5
     next.visible = false;
+
+    flower1.visible = true;
+    gameScene_1.visible = false;
+    gameScene_1.interactive = false;
+    gameScene_2.visible = true;
+    gameScene_2.interactive = true;
 }
 
 function setUpSceneThree()
 {
     /*
-            GAME SCENE 1
+            GAME SCENE 3
     */
     gameScene_2.interactive = false;
     gameScene_2.visible = false;
 
     right_flying_bee = new PIXI.AnimatedSprite(frames_bee_r);
     right_flying_bee.scale.set(1, 1);
-    right_flying_bee.position.x = 200;
-    right_flying_bee.position.y = 200;
+    right_flying_bee.position.x = 20;
+    right_flying_bee.position.y = 20;
     right_flying_bee.animationSpeed = 0.25;
     right_flying_bee.play();
-    gameScene_1.addChild(right_flying_bee);
+    gameScene_3.addChild(right_flying_bee);
 
-    left_flying_bee = new PIXI.AnimatedSprite(frames_bee_l);
     left_flying_bee.scale.set(1, 1);
     left_flying_bee.position.x = 200;
     left_flying_bee.position.y = 200;
     left_flying_bee.animationSpeed = 0.25;
     left_flying_bee.play();
-    gameScene_1.addChild(left_flying_bee);
+    gameScene_3.addChild(left_flying_bee);
 
-    up_flying_bee = new PIXI.AnimatedSprite(frames_bee_u);
     up_flying_bee.scale.set(1, 1);
     up_flying_bee.position.x = 200;
     up_flying_bee.position.y = 200;
     up_flying_bee.animationSpeed = 0.25;
     up_flying_bee.play();
-    gameScene_1.addChild(up_flying_bee);
+    gameScene_3.addChild(up_flying_bee);
 
-    down_flying_bee = new PIXI.AnimatedSprite(frames_bee_d);
     down_flying_bee.scale.set(1, 1);
-    down_flying_bee.position.x = 200;
-    down_flying_bee.position.y = 200;
+    down_flying_bee.position.x = 20;
+    down_flying_bee.position.y = 20;
     down_flying_bee.animationSpeed = 0.25;
     down_flying_bee.play();
-    gameScene_1.addChild(down_flying_bee);
+    gameScene_3.addChild(down_flying_bee);
 
     left_flying_bee.visible = false;
     up_flying_bee.visible = false;
-    down_flying_bee.visible = false;
+    down_flying_bee.visible = true;
+    right_flying_bee.visible = false;
 
-    quit_game_button = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Quit.png"));
+    quit_game_button_3 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Quit.png"));
 
-    gameScene_1.addChild(quit_game_button);
-    quit_game_button.anchor.x = .5;
-    quit_game_button.anchor.y = .5;
-    quit_game_button.position.x = 450;
-    quit_game_button.position.y = 20;
+    gameScene_3.addChild(quit_game_button_3);
+    quit_game_button_3.anchor.x = .5;
+    quit_game_button_3.anchor.y = .5;
+    quit_game_button_3.position.x = 450;
+    quit_game_button_3.position.y = 20;
     
+    quit_game_button_3.interactive = true;
 
-    quit_game_button.interactive = true;
+    gameScene_3.addChild(rock1);
+    gameScene_3.addChild(rock2);
+    gameScene_3.addChild(rock3);
+    gameScene_3.addChild(rock4);
 
-    rock1 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock.png"));
-    rock2 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock2.png"));
-    rock3 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock3.png"));
-    rock4 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock3.png"));
-
-    gameScene_1.addChild(rock1);
-    gameScene_1.addChild(rock2);
-    gameScene_1.addChild(rock3);
-    gameScene_1.addChild(rock4);
-
-    rock1.position.x = 20;
-    rock1.position.y = 300;
+    rock1.position.x = 100;
+    rock1.position.y = 400;
     
-    rock2.position.x = 400;
-    rock2.position.y = 90;
+    rock2.position.x = 435;
+    rock2.position.y = 360;
 
-    rock3.position.x = 200;
-    rock3.position.y = 400;
+    rock3.position.x = 132;
+    rock3.position.y = 20;
 
-    rock4.position.x = 200;
-    rock4.position.y = 50;
+    rock4.position.x = 20;
+    rock4.position.y = 300;
 
-    flower1 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Flower.png"));
+    gameScene_3.addChild(flower1);
 
-    gameScene_1.addChild(flower1);
-
-    flower1.position.x = 350;
-    flower1.position.y = 375;
+    flower1.position.x = 400;
+    flower1.position.y = 42;
 
     flower1.visible = true;
     gameScene_2.visible = false;
@@ -519,26 +513,21 @@ function setUpSceneThree()
 function setUpSceneFour()
 {
     /*
-            GAME SCENE 1
+            GAME SCENE 4
     */
-    gameScene_1.interactive = false;
-    gameScene_1.visible = false;
-
-    right_flying_bee = new PIXI.AnimatedSprite(frames_bee_r);
     right_flying_bee.scale.set(1, 1);
     right_flying_bee.position.x = 200;
     right_flying_bee.position.y = 200;
     right_flying_bee.animationSpeed = 0.25;
     right_flying_bee.play();
-    gameScene_1.addChild(right_flying_bee);
+    gameScene_4.addChild(right_flying_bee);
 
-    left_flying_bee = new PIXI.AnimatedSprite(frames_bee_l);
     left_flying_bee.scale.set(1, 1);
-    left_flying_bee.position.x = 200;
-    left_flying_bee.position.y = 200;
+    left_flying_bee.position.x = 450;
+    left_flying_bee.position.y = 100;
     left_flying_bee.animationSpeed = 0.25;
     left_flying_bee.play();
-    gameScene_1.addChild(left_flying_bee);
+    gameScene_4.addChild(left_flying_bee);
 
     up_flying_bee = new PIXI.AnimatedSprite(frames_bee_u);
     up_flying_bee.scale.set(1, 1);
@@ -546,66 +535,55 @@ function setUpSceneFour()
     up_flying_bee.position.y = 200;
     up_flying_bee.animationSpeed = 0.25;
     up_flying_bee.play();
-    gameScene_1.addChild(up_flying_bee);
+    gameScene_4.addChild(up_flying_bee);
 
-    down_flying_bee = new PIXI.AnimatedSprite(frames_bee_d);
     down_flying_bee.scale.set(1, 1);
     down_flying_bee.position.x = 200;
     down_flying_bee.position.y = 200;
     down_flying_bee.animationSpeed = 0.25;
     down_flying_bee.play();
-    gameScene_1.addChild(down_flying_bee);
+    gameScene_4.addChild(down_flying_bee);
 
-    left_flying_bee.visible = false;
+    left_flying_bee.visible = true;
     up_flying_bee.visible = false;
     down_flying_bee.visible = false;
+    right_flying_bee.visible = false;
 
-    quit_game_button = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Quit.png"));
+    quit_game_button_4 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Quit.png"));
 
-    gameScene_1.addChild(quit_game_button);
-    quit_game_button.anchor.x = .5;
-    quit_game_button.anchor.y = .5;
-    quit_game_button.position.x = 450;
-    quit_game_button.position.y = 20;
-
+    gameScene_4.addChild(quit_game_button_4);
+    quit_game_button_4.anchor.x = .5;
+    quit_game_button_4.anchor.y = .5;
+    quit_game_button_4.position.x = 450;
+    quit_game_button_4.position.y = 20;
     
-    quit_game_button.interactive = true;
+    quit_game_button_4.interactive = true;
 
-    rock1 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock.png"));
-    rock2 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock2.png"));
-    rock3 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock3.png"));
-    rock4 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock3.png"));
+    gameScene_4.addChild(rock1);
+    gameScene_4.addChild(rock2);
+    gameScene_4.addChild(rock3);
+    gameScene_4.addChild(rock4);
 
-    gameScene_1.addChild(rock1);
-    gameScene_1.addChild(rock2);
-    gameScene_1.addChild(rock3);
-    gameScene_1.addChild(rock4);
-
-    rock1.position.x = 20;
+    rock1.position.x = 75;
     rock1.position.y = 300;
     
-    rock2.position.x = 400;
-    rock2.position.y = 90;
+    rock3.position.x = 380;
+    rock3.position.y = 440;
 
-    rock3.position.x = 200;
-    rock3.position.y = 400;
+    rock2.position.x = 430;
+    rock2.position.y = 260;
 
-    rock4.position.x = 200;
-    rock4.position.y = 50;
+    rock4.position.x = 30;
+    rock4.position.y = 80;
 
-    flower1 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Flower.png"));
+    gameScene_4.addChild(flower1);
 
-    gameScene_1.addChild(flower1);
-
-    flower1.position.x = 350;
-    flower1.position.y = 375;
+    flower1.position.x = 20;
+    flower1.position.y = 410;
 
     flower1.visible = true;
-    gameScene_3.visible = false;
-    gameScene_3.interactive = false;
-    gameScene_4.visible = true;
-    gameScene_4.interactive = true;
 
+    goodJob = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_You_Win.png"));
     gameScene_4.addChild(goodJob);
     goodJob.position.x = 250;
     goodJob.position.y = 300;
@@ -619,6 +597,11 @@ function setUpSceneFour()
     next.anchor.x = .5
     next.anchor.y = .5
     next.visible = false;
+
+    gameScene_3.visible = false;
+    gameScene_3.interactive = false;
+    gameScene_4.visible = true;
+    gameScene_4.interactive = true;
 }
 
 function start() 
@@ -632,9 +615,13 @@ function start()
         openingScene.visible = false;
     }
 
+    //setUpSceneOne();
+    setUpSceneFour();
     flower1.visible = true;
-    gameScene_1.visible = true;
-    gameScene_1.interactive = true;
+    // gameScene_1.visible = true;
+    // gameScene_1.interactive = true;
+    gameScene_4.visible = true;
+    gameScene_4.interactive = true;
 }
 
 // all the code that will run at the end of the game
@@ -654,6 +641,12 @@ function quit()
 
     gameScene_1.visible = false;
     gameScene_1.interactive = false;
+    gameScene_2.visible = false;
+    gameScene_2.interactive = false;
+    gameScene_3.visible = false;
+    gameScene_3.interactive = false;
+    gameScene_4.visible = false;
+    gameScene_4.interactive = false;
     left_flying_bee.visible = false;
     up_flying_bee.visible = false;
     down_flying_bee.visible = false;
@@ -688,6 +681,8 @@ function quit_gameover()
 
 function playCredits()
 {
+    gameScene_4.interactive = false;
+    gameScene_4.visible = false;
     creditScene.visible = true;
     creditScene.interactive = true;
     openingScene.visible = false;
@@ -719,8 +714,8 @@ function collisionBetween(sprite1, sprite2)
 
     var sprite2_bottom = sprite2.y + sprite2.height/4,
         sprite2_top = sprite2.y - sprite2.height/4,
-        sprite2_right_side = sprite2.x + sprite2.width/2,
-        sprite2_left_side = sprite2.x - sprite2.width/2;
+        sprite2_right_side = sprite2.x + sprite2.width,
+        sprite2_left_side = sprite2.x - sprite2.width/6;
 
 
     var hitFromAbove = (sprite1_bottom >= sprite2_top) 
@@ -745,15 +740,6 @@ function collisionBetween(sprite1, sprite2)
 
     return hitFromAbove || hitFromBelow || hitFromLeft || hitFromRight;
 }
-
-function box_point_intersection(box, x, y) {
-    if (box.position.x > x) return false;
-    if (x > box.position.x + box.width) return false;
-    if (box.position.y > y) return false;
-    if (y > box.position.y + box.height) return false;
-
-    return true;
-  }
 
 function finished()
 {
@@ -827,7 +813,7 @@ function animate()
     else if(gameScene_2.interactive)
     {
         // show game over if bee fly's off screen
-        if(down_flying_bee.y > renderer.height
+        if(down_flying_bee.position.y > renderer.height
             || up_flying_bee.y < 0
             || left_flying_bee.x < 0
             || right_flying_bee.x > renderer.width)
@@ -840,9 +826,14 @@ function animate()
             createjs.Tween.removeTweens(right_flying_bee.position);
         }
 
-        if(collisionBetween(down_flying_bee, rock4))
+        if(collisionBetween(down_flying_bee, rock3))
         {
             createjs.Tween.removeTweens(down_flying_bee.position);
+        }
+
+        if(collisionBetween(left_flying_bee, rock2))
+        {
+            createjs.Tween.removeTweens(left_flying_bee.position);
         }
 
         if(collisionBetween(left_flying_bee, flower1))
@@ -861,9 +852,7 @@ function animate()
 
         next.on('mousedown', setUpSceneThree);
 
-        right_flying_bee.interactive = true;
-        quit_game_button.interactive = true;
-        quit_game_button.on('mousedown', quit);
+        quit_game_button_2.on('mousedown', quit);
         document.addEventListener('keydown', keydownHandler);
 
         renderer.render(gameScene_2);
@@ -881,35 +870,41 @@ function animate()
             quit();
         }
 
-        if(collisionBetween(down_flying_bee, rock3))
+        //rock 4 - top
+        if(collisionBetween(right_flying_bee, rock3))
+        {
+            createjs.Tween.removeTweens(right_flying_bee.position);
+        }
+
+        //rock 1 - bottom
+        if(collisionBetween(down_flying_bee, rock1))
         {
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
-        if(collisionBetween(up_flying_bee, rock4))
-        {
-            createjs.Tween.removeTweens(up_flying_bee.position);
-        }
-
-        if(collisionBetween(right_flying_bee, flower1))
+        //rock 2 - right
+        if(collisionBetween(rock2, right_flying_bee))
         {
             createjs.Tween.removeTweens(right_flying_bee.position);
+        }
+
+        if(collisionBetween(up_flying_bee, flower1))
+        {
+            createjs.Tween.removeTweens(up_flying_bee.position);
             flower1.visible = false;
-            right_flying_bee.interactive = false;
+            up_flying_bee.interactive = false;
             left_flying_bee.interactive = false;
             up_flying_bee.interactive = false;
             down_flying_bee.interactive = false;
             goodJob.visible = true;
             next.visible = true;
             next.interactive = true;
-            right_flying_bee.rotation -= .1;
+            up_flying_bee.rotation -= .1;
         }
 
         next.on('mousedown', setUpSceneFour);
 
-        right_flying_bee.interactive = true;
-        quit_game_button.interactive = true;
-        quit_game_button.on('mousedown', quit);
+        quit_game_button_3.on('mousedown', quit);
         document.addEventListener('keydown', keydownHandler);
 
         renderer.render(gameScene_3);
@@ -927,27 +922,48 @@ function animate()
             quit();
         }
 
+        if(collisionBetween(left_flying_bee, rock4))
+        {
+            createjs.Tween.removeTweens(left_flying_bee.position);
+        }
+
+        if(collisionBetween(down_flying_bee, rock2))
+        {
+            createjs.Tween.removeTweens(down_flying_bee.position);
+        }
+
+        if(collisionBetween(rock2, right_flying_bee))
+        {
+            createjs.Tween.removeTweens(right_flying_bee.position);
+        }
+
         if(collisionBetween(down_flying_bee, rock3))
         {
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
-        if(collisionBetween(up_flying_bee, rock4))
+        if(collisionBetween(down_flying_bee, rock1))
         {
-            createjs.Tween.removeTweens(up_flying_bee.position);
+            createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
-        if(collisionBetween(right_flying_bee, flower1))
+        if(collisionBetween(left_flying_bee, flower1))
         {
-            createjs.Tween.removeTweens(right_flying_bee.position);
+            createjs.Tween.removeTweens(left_flying_bee.position);
             flower1.visible = false;
+            left_flying_bee.interactive = false;
+            right_flying_bee.interactive = false;
+            up_flying_bee.interactive = false;
+            down_flying_bee.interactive = false;
             goodJob.visible = true;
-            finished();
+            next.visible = true;
+            next.interactive = true;
+            left_flying_bee.rotation += .1;
         }
 
-        right_flying_bee.interactive = true;
-        quit_game_button.interactive = true;
-        quit_game_button.on('mousedown', quit);
+        next.on('mousedown', playCredits);
+
+        quit_game_button_4.on('mousedown', quit);
         document.addEventListener('keydown', keydownHandler);
 
         renderer.render(gameScene_4);
@@ -1028,7 +1044,7 @@ function keydownHandler(e)
             left_flying_bee.position.y = current_bee_y;
             left_flying_bee.visible = true;
             left_flying_bee.interactive = true;
-            createjs.Tween.get(left_flying_bee.position).to({x: -50}, 5000);
+            createjs.Tween.get(left_flying_bee.position).to({x: left_flying_bee.position.x-550}, 5000);
         }
 
         else if (e.keyCode == 68) //D //RIGHT
@@ -1038,7 +1054,7 @@ function keydownHandler(e)
             right_flying_bee.visible = true;
             right_flying_bee.interactive = true;
 
-            createjs.Tween.get(right_flying_bee.position).to({x: 550}, 5000);
+            createjs.Tween.get(right_flying_bee.position).to({x: right_flying_bee.position.x + 550}, 5000);
         }
 
         else if (e.keyCode == 83) //S //DOWN
@@ -1048,7 +1064,7 @@ function keydownHandler(e)
             down_flying_bee.visible = true;
             down_flying_bee.interactive = true;
 
-            createjs.Tween.get(down_flying_bee.position).to({y: 550}, 5000);
+            createjs.Tween.get(down_flying_bee.position).to({y: down_flying_bee.position.y + 550}, 5000);
         }
 
         else if (e.keyCode == 87) //W //UP
@@ -1057,7 +1073,7 @@ function keydownHandler(e)
             up_flying_bee.position.y = current_bee_y;
             up_flying_bee.visible = true;
             up_flying_bee.interactive = true;
-            createjs.Tween.get(up_flying_bee.position).to({y: -50}, 5000);
+            createjs.Tween.get(up_flying_bee.position).to({y: up_flying_bee.position.y-550}, 5000);
         }
     }
 }
