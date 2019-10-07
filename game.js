@@ -28,11 +28,10 @@ PIXI.loader
 
 var opening_flying_bee, start_button, instruction_button, credits_button, 
     right_flying_bee, left_flying_bee, up_flying_bee, down_flying_bee, 
-    quit_game_button, credits, rock1, rock2, rock3, gameover, 
-    quit_credits_button, quit_game_over_button, quit_instructions_button;
+    quit_game_button, credits, rock1, rock2, rock3, gameover, flower1, flower2,
+    flower3, quit_credits_button, quit_game_over_button, quit_instructions_button;
 
-// This will initialize all our sprites, set the state = play
-//      and start our game loop
+// This will initialize all our sprites and start our gameloop
 function setup()
 {
     /*
@@ -194,21 +193,35 @@ function setup()
     rock1 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock.png"));
     rock2 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock2.png"));
     rock3 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock3.png"));
-    
+    rock4 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Rock3.png"));
+
     gameScene.addChild(rock1);
     gameScene.addChild(rock2);
     gameScene.addChild(rock3);
+    gameScene.addChild(rock4);
 
     rock1.position.x = 20;
-    rock1.position.y = 40;
+    rock1.position.y = 300;
     
     rock2.position.x = 400;
-    rock2.position.y = 60;
+    rock2.position.y = 90;
 
     rock3.position.x = 200;
     rock3.position.y = 400;
 
-    // set up end game scene
+    rock4.position.x = 200;
+    rock4.position.y = 50;
+
+    flower1 = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Flower.png"));
+
+    gameScene.addChild(flower1);
+
+    flower1.position.x = 350;
+    flower1.position.y = 375;
+
+    /*
+            END GAME SCENE SET UP  
+    */
     gameOverScene.interactive = false;
     gameOverScene.visible = false;
 
@@ -253,7 +266,7 @@ function setup()
     credits.anchor.x = .5;
     credits.anchor.y = .5;
     credits.position.x = 250;
-    credits.position.y = 250;
+    credits.position.y = 600;
 
 
     animate();
@@ -270,7 +283,8 @@ function start()
         credits_button.interactive = false;
         openingScene.visible = false;
     }
-
+    
+    flower1.visible = true;
     gameScene.visible = true;
     gameScene.interactive = true;
 }
@@ -321,6 +335,8 @@ function quit_gameover()
     openingScene.interactive = true;
     openingScene.visible = true;
 
+    
+
     renderer.render(openingScene);
 }
 
@@ -344,6 +360,51 @@ function instructionHandler(e)
     renderer.render(instructionScene);
 }
 
+function collisionBetween(sprite1, sprite2)
+{
+    var sprite1_bottom = sprite1.y + sprite1.height/4,
+        sprite1_top = sprite1.y - sprite1.height/4,
+        sprite1_right_side = sprite1.x + sprite1.width/2,
+        sprite1_left_side = sprite1.x - sprite1.width/2;
+
+    var sprite2_bottom = sprite2.y + sprite2.height/4,
+        sprite2_top = sprite2.y - sprite2.height/4,
+        sprite2_right_side = sprite2.x + sprite2.width/2,
+        sprite2_left_side = sprite2.x - sprite2.width/2;
+
+
+    var hitFromAbove = (sprite1_bottom >= sprite2_top) 
+                        && (sprite1_top <= sprite2_top)
+                        && (sprite1.x > sprite2_left_side) 
+                        && (sprite1.x < sprite2_right_side);
+
+    var hitFromBelow = (sprite1_top <= sprite2_bottom) 
+                        && (sprite1_bottom >= sprite2_bottom) 
+                        && (sprite1.x > sprite2_left_side) 
+                        && (sprite1.x < sprite2_right_side);
+
+    var hitFromLeft = (sprite1_right_side >= sprite2_left_side) 
+                        && (sprite1_left_side <= sprite2_left_side)
+                        && (sprite1.y > sprite2_top) 
+                        && (sprite1.y < sprite2_bottom);
+
+    var hitFromRight = (sprite1_left_side <= sprite2_right_side) 
+                        && (sprite1_right_side >= sprite2_right_side)
+                        && (sprite1.y > sprite2_top) 
+                        && (sprite1.y < sprite2_bottom);
+
+    return hitFromAbove || hitFromBelow || hitFromLeft || hitFromRight;
+}
+
+function box_point_intersection(box, x, y) {
+    if (box.position.x > x) return false;
+    if (x > box.position.x + box.width) return false;
+    if (box.position.y > y) return false;
+    if (y > box.position.y + box.height) return false;
+
+    return true;
+  }
+
 function animate()
 {
     requestAnimationFrame(animate);
@@ -362,6 +423,32 @@ function animate()
     
     else if(gameScene.interactive)
     {
+        // show game over if bee fly's off screen
+        if(down_flying_bee.y > renderer.height
+            || up_flying_bee.y < 0
+            || left_flying_bee.x < 0
+            || right_flying_bee.x > renderer.width)
+        {
+            quit();
+        }
+
+        if(collisionBetween(down_flying_bee, rock3))
+        {
+            createjs.Tween.removeTweens(down_flying_bee.position);
+        }
+
+        if(collisionBetween(up_flying_bee, rock4))
+        {
+            createjs.Tween.removeTweens(up_flying_bee.position);
+        }
+
+        if(collisionBetween(right_flying_bee, flower1))
+        {
+            createjs.Tween.removeTweens(right_flying_bee.position);
+            flower1.visible = false;
+            //next_scene()
+        }
+
         right_flying_bee.interactive = true;
         quit_game_button.interactive = true;
         quit_game_button.on('mousedown', quit);
@@ -390,6 +477,8 @@ function animate()
     {
         quit_credits_button.interactive = true;
         quit_credits_button.on('mousedown', quit_to_home);
+        createjs.Tween.get(credits).to({y: -100}, 10000);
+
 
         renderer.render(creditScene);
     }
@@ -441,7 +530,7 @@ function keydownHandler(e)
             left_flying_bee.position.y = current_bee_y;
             left_flying_bee.visible = true;
             left_flying_bee.interactive = true;
-            createjs.Tween.get(left_flying_bee).to({x: left_flying_bee.position.x - 50}, 1000);
+            createjs.Tween.get(left_flying_bee).to({x: -50}, 5000);
         }
 
         else if (e.keyCode == 68) //D //RIGHT
@@ -450,7 +539,8 @@ function keydownHandler(e)
             right_flying_bee.position.y = current_bee_y;
             right_flying_bee.visible = true;
             right_flying_bee.interactive = true;
-            createjs.Tween.get(right_flying_bee).to({x: right_flying_bee.position.x + 50}, 1000);
+
+            createjs.Tween.get(right_flying_bee).to({x: 550}, 5000);
         }
 
         else if (e.keyCode == 83) //S //DOWN
@@ -459,7 +549,8 @@ function keydownHandler(e)
             down_flying_bee.position.y = current_bee_y;
             down_flying_bee.visible = true;
             down_flying_bee.interactive = true;
-            createjs.Tween.get(down_flying_bee).to({y: down_flying_bee.position.y + 50}, 1000);
+
+            createjs.Tween.get(down_flying_bee.position).to({y: 550}, 5000);
         }
 
         else if (e.keyCode == 87) //W //UP
@@ -468,7 +559,7 @@ function keydownHandler(e)
             up_flying_bee.position.y = current_bee_y;
             up_flying_bee.visible = true;
             up_flying_bee.interactive = true;
-            createjs.Tween.get(up_flying_bee).to({y: up_flying_bee.position.y - 50}, 1000);
+            createjs.Tween.get(up_flying_bee).to({y: -50}, 5000);
         }
     }
 }
