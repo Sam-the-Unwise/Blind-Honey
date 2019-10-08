@@ -30,9 +30,14 @@ gameOverScene.visible = false;
 var creditScene = new PIXI.Container();
 gameOverScene.visible = false;
 
-
 PIXI.loader
     .add("Sprites/assets.json")
+    .add("Sounds/Button_Select.mp3")
+    .add("Sounds/Flower_Pickup.mp3")
+    .add("Sounds/Hit_Big_Rock.mp3")
+    .add("Sounds/Hit_Medium_Rock.mp3")
+    .add("Sounds/Hit_Small_Rock.mp3")
+    .add("Sounds/Quit_Game.mp3")
     .load(setup);
 
 var opening_flying_bee, start_button, instruction_button, credits_button, 
@@ -44,9 +49,21 @@ var right_flying_bee, left_flying_bee, up_flying_bee, down_flying_bee,
 
 var frames_bee_u = [], frames_bee_r = [], frames_bee_l = [], frames_bee_d = [];
     
+var select_button_sound, flower_pickup_sound, hit_big_rock, hit_med_rock, hit_small_rock,
+    quit_game_sound;
+
+var count = 0, rock_hit_1 = 0, rock_hit_2 = 0, rock_hit_3 = 0, rock_hit_4 = 0;
+
 // This will initialize all our sprites and start our gameloop
 function setup()
 {
+    select_button_sound = PIXI.sound.Sound.from("Sounds/Button_Select.mp3");
+    flower_pickup_sound = PIXI.sound.Sound.from("Sounds/Flower_Pickup.mp3");
+    hit_big_rock = PIXI.sound.Sound.from("Sounds/Hit_Big_Rock.mp3")
+    hit_med_rock = PIXI.sound.Sound.from("Sounds/Hit_Medium_Rock.mp3");
+    hit_small_rock = PIXI.sound.Sound.from("Sounds/Hit_Small_Rock.mp3");
+    quit_game_sound = PIXI.sound.Sound.from("Sounds/Quit_Game.mp3");
+
     // create sprite sheets
     for (var i = 1; i <= 4; i++)
     {
@@ -67,6 +84,8 @@ function setup()
     {
         frames_bee_d.push(PIXI.Texture.fromFrame('Sprites/Sprite_Bee_D' + i + '.png'));
     }
+
+    setUpSceneOne();
     
     /*
             OPENING SCENE SETUP
@@ -117,7 +136,6 @@ function setup()
     instruction_button.interactive = false;
     credits_button.interactive = false;
 
-
     /*
             INSTRUCTION SCENE SETUP
     */
@@ -141,12 +159,6 @@ function setup()
     instructions.anchor.y = .5;
     instructions.position.x = 250;
     instructions.position.y = 250;
-
-
-    /*
-            GAME SCENE SETUP
-    */
-    setUpSceneOne();
 
     /*
             END GAME SCENE SET UP  
@@ -262,6 +274,7 @@ function setUpSceneOne()
     left_flying_bee.visible = false;
     up_flying_bee.visible = false;
     down_flying_bee.visible = false;
+    right_flying_bee.visible = true;
 
     quit_game_button = new PIXI.Sprite(PIXI.Texture.from("Sprites/Sprite_Quit.png"));
 
@@ -323,6 +336,8 @@ function setUpSceneOne()
 
 function setUpSceneTwo()
 {
+    count = 0;
+    select_button_sound.play();
     /*
             GAME SCENE 2
     */
@@ -417,6 +432,9 @@ function setUpSceneTwo()
 
 function setUpSceneThree()
 {
+    count = 0;
+    select_button_sound.play();
+
     /*
             GAME SCENE 3
     */
@@ -512,6 +530,9 @@ function setUpSceneThree()
 
 function setUpSceneFour()
 {
+    count = 0;
+    select_button_sound.play();
+
     /*
             GAME SCENE 4
     */
@@ -604,37 +625,35 @@ function setUpSceneFour()
     gameScene_4.interactive = true;
 }
 
-function start() 
-{
-    if(openingScene.interactive)
-    {
-        openingScene.interactive = false;
-        start_button.interactive = false;
-        instruction_button.interactive = false;
-        credits_button.interactive = false;
-        openingScene.visible = false;
-    }
-
-    //setUpSceneOne();
-    setUpSceneFour();
-    flower1.visible = true;
-    // gameScene_1.visible = true;
-    // gameScene_1.interactive = true;
-    gameScene_4.visible = true;
-    gameScene_4.interactive = true;
-}
-
 // all the code that will run at the end of the game
 function end()
 {
+    select_button_sound.play();
     gameScene_1.interactive = false;
     
     gameOverScene.visible = true;
     gameOverScene.interactive = true;
 }
 
+function start()
+{
+    select_button_sound.play();
+
+    openingScene.interactive = false;
+    start_button.interactive = false;
+    instruction_button.interactive = false;
+    credits_button.interactive = false;
+    openingScene.visible = false;
+
+    flower1.visible = true;
+    gameScene_1.visible = true;
+    gameScene_1.interactive = true;
+}
+
 function quit()
 {
+    quit_game_sound.play();
+
     // if quit, show game over scene and get ride of game scene
     gameOverScene.interactive = true;
     gameOverScene.visible = true;
@@ -661,6 +680,8 @@ function quit()
 // used for quit_credits and quit_instructions to take you back to the home screen
 function quit_to_home()
 {
+    quit_game_sound.play();
+
     instructionScene.interactive = false;
     instructionScene.visible = false;
     openingScene.interactive = true;
@@ -681,6 +702,8 @@ function quit_gameover()
 
 function playCredits()
 {
+    select_button_sound.play();
+
     gameScene_4.interactive = false;
     gameScene_4.visible = false;
     creditScene.visible = true;
@@ -697,6 +720,7 @@ function playCredits()
 
 function instructionHandler(e)
 {
+    select_button_sound.play();
     instructionScene.visible = true;
     instructionScene.interactive = true;
     openingScene.visible = false;
@@ -743,7 +767,6 @@ function collisionBetween(sprite1, sprite2)
 
 function finished()
 {
-    start();
     playCredits();
 }
 
@@ -756,6 +779,7 @@ function animate()
         start_button.interactive = true;
         instruction_button.interactive = true;
         credits_button.interactive = true;
+        
         start_button.on('mousedown', start);
         instruction_button.on('mousedown', instructionHandler);
         credits_button.on('mousedown', playCredits);
@@ -777,26 +801,60 @@ function animate()
 
         if(collisionBetween(down_flying_bee, rock3))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 ++;
+            rock_hit_4 = 0;
+
+            if(rock_hit_3 == 1)
+            {
+                hit_big_rock.play();
+            }
+        
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
         if(collisionBetween(up_flying_bee, rock4))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 ++;
+
+            if(rock_hit_4 == 1)
+            {
+                hit_big_rock.play();
+            }
+            
             createjs.Tween.removeTweens(up_flying_bee.position);
         }
 
         if(collisionBetween(right_flying_bee, flower1))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            count ++;
+
+            if(count == 1)
+            {
+                flower_pickup_sound.play();
+            }
+
             createjs.Tween.removeTweens(right_flying_bee.position);
             flower1.visible = false;
+            
             right_flying_bee.interactive = false;
             left_flying_bee.interactive = false;
             up_flying_bee.interactive = false;
             down_flying_bee.interactive = false;
+            
             goodJob.visible = true;
             next.visible = true;
             next.interactive = true;
-            right_flying_bee.rotation -= .1;
+            right_flying_bee.rotation += .1;
         }
 
         next.on('mousedown', setUpSceneTwo);
@@ -823,27 +881,69 @@ function animate()
 
         if(collisionBetween(right_flying_bee, rock1))
         {
+            rock_hit_1 ++;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(rock_hit_1 == 1)
+            {
+                hit_small_rock.play();
+            }
+            
             createjs.Tween.removeTweens(right_flying_bee.position);
         }
 
         if(collisionBetween(down_flying_bee, rock3))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 ++;
+            rock_hit_4 = 0;
+
+            if(rock_hit_3 == 1)
+            {
+                hit_big_rock.play();
+            }
+            
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
         if(collisionBetween(left_flying_bee, rock2))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 ++;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(rock_hit_2 == 1)
+            {
+                hit_med_rock.play();
+            }
+            
             createjs.Tween.removeTweens(left_flying_bee.position);
         }
 
         if(collisionBetween(left_flying_bee, flower1))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(count == 1)
+            {
+                flower_pickup_sound.play();
+            }
+
             createjs.Tween.removeTweens(left_flying_bee.position);
             flower1.visible = false;
+            
             right_flying_bee.interactive = false;
             left_flying_bee.interactive = false;
             up_flying_bee.interactive = false;
             down_flying_bee.interactive = false;
+            
             goodJob.visible = true;
             next.visible = true;
             next.interactive = true;
@@ -873,29 +973,71 @@ function animate()
         //rock 4 - top
         if(collisionBetween(right_flying_bee, rock3))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 ++;
+            rock_hit_4 = 0;
+
+            if(rock_hit_3 == 1)
+            {
+                hit_big_rock.play();
+            }
+            
             createjs.Tween.removeTweens(right_flying_bee.position);
         }
 
         //rock 1 - bottom
         if(collisionBetween(down_flying_bee, rock1))
         {
+            rock_hit_1 ++;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(rock_hit_1 == 1)
+            {
+                hit_small_rock.play();
+            }
+            
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
         //rock 2 - right
         if(collisionBetween(rock2, right_flying_bee))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 ++;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(rock_hit_2)
+            {
+                hit_med_rock.play();
+            }
+            
             createjs.Tween.removeTweens(right_flying_bee.position);
         }
 
         if(collisionBetween(up_flying_bee, flower1))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(count == 1)
+            {
+                flower_pickup_sound.play();
+            }
+
             createjs.Tween.removeTweens(up_flying_bee.position);
             flower1.visible = false;
+
             up_flying_bee.interactive = false;
             left_flying_bee.interactive = false;
             up_flying_bee.interactive = false;
             down_flying_bee.interactive = false;
+
             goodJob.visible = true;
             next.visible = true;
             next.interactive = true;
@@ -924,37 +1066,99 @@ function animate()
 
         if(collisionBetween(left_flying_bee, rock4))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 ++;
+
+            if(rock_hit_4 == 1)
+            {
+                hit_big_rock.play();
+            }
+            
             createjs.Tween.removeTweens(left_flying_bee.position);
         }
 
         if(collisionBetween(down_flying_bee, rock2))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 ++;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(rock_hit_2 == 1)
+            {
+                hit_med_rock.play();
+            }
+            
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
         if(collisionBetween(rock2, right_flying_bee))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 ++;
+            rock_hit_4 = 0;
+
+            if(rock_hit_2 == 1)
+            {
+                hit_med_rock.play();
+            }
+            
             createjs.Tween.removeTweens(right_flying_bee.position);
         }
 
         if(collisionBetween(down_flying_bee, rock3))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 ++;
+            rock_hit_4 = 0;
+
+            if(rock_hit_3)
+            {
+                hit_big_rock.play();
+            }
+            
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
         if(collisionBetween(down_flying_bee, rock1))
         {
+            rock_hit_1 ++;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(rock_hit_1 == 1)
+            {
+                hit_small_rock.play();
+            }
+            
             createjs.Tween.removeTweens(down_flying_bee.position);
         }
 
         if(collisionBetween(left_flying_bee, flower1))
         {
+            rock_hit_1 = 0;
+            rock_hit_2 = 0;
+            rock_hit_3 = 0;
+            rock_hit_4 = 0;
+
+            if(count == 1)
+            {
+                flower_pickup_sound.play();
+            }
+
             createjs.Tween.removeTweens(left_flying_bee.position);
             flower1.visible = false;
+
             left_flying_bee.interactive = false;
             right_flying_bee.interactive = false;
             up_flying_bee.interactive = false;
             down_flying_bee.interactive = false;
+
             goodJob.visible = true;
             next.visible = true;
             next.interactive = true;
@@ -996,6 +1200,11 @@ function animate()
 
         renderer.render(creditScene);
     }
+}
+
+function mouseHandler(e)
+{
+    console.log("here")
 }
 
 //CREATE HANDLER FUNCTIONS
